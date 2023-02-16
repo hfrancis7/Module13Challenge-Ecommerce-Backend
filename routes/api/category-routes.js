@@ -43,8 +43,25 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async(req, res) => {
   // update a category by its `id` value
+  console.log(req.body)
+  try{
+    console.log(req.params)
+    const categoryData = await Category.update(
+      {
+        category_name: req.body.category_name
+      },
+      {
+        where: {id: req.params.id}
+      }
+    )
+    console.log(categoryData);
+    res.status(200).json(categoryData);
+
+  }catch(err){
+    res.status(400).json(err); //400 means bad request, 500 is internal server error
+  }
 });
 
 router.delete('/:id', async (req, res) => {
