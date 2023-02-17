@@ -48,7 +48,7 @@ router.put('/:id', async (req, res) => {
   try{
     const tagData = await Tag.update(
       {
-        category_name: req.body.tag_name
+        tag_name: req.body.tag_name
       },
       {
         where: {id: req.params.id}

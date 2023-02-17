@@ -69,6 +69,7 @@ router.post('/', (req, res) => {
 });
 
 // update product
+//this function was already written -- getting a 400 status error
 router.put('/:id', (req, res) => {
   // update product data
   Product.update(req.body, {
@@ -110,8 +111,22 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // delete one product by its `id` value
+  try {
+    const productData = await Product.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
+    if(!productData){
+      res.status(404).json({ message: 'No tag found with this id!' });
+      return;
+    }
+    res.status(200).json(productData);
+  }catch(err){
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
